@@ -6,6 +6,8 @@ using System.Configuration.Install;
 using System.Linq;
 using System.Threading.Tasks;
 
+using System.ServiceProcess;
+
 namespace WalkthroughWindowsService
 {
     [RunInstaller(true)]
@@ -14,6 +16,13 @@ namespace WalkthroughWindowsService
         public ProjectInstaller()
         {
             InitializeComponent();
+
+            AfterInstall += (sender, e) =>
+            {
+                ServiceController sc = new ServiceController(serviceInstaller1.ServiceName);
+                if (sc != null)
+                    sc.Start();
+            };
         }
     }
 }
